@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<title>Pulse - Login</title>
+<style>
+body{
+	font-family:'Open Sans';
+	background-color:#333;
+}
+.login{
+	background-color:#06C;
+	width:400px;
+	height:200px;
+	margin:auto;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	position:absolute;
+}
+.loginform{
+	position:relative;
+	text-align:center;
+	line-height:25px;
+	width:200px;
+	margin: 0 auto;
+	display:block;
+	top: 20px;
+	color: #06C;
+}
+#submit{
+	width:150px;
+	height:25px;
+	background-color:#FFF;
+	color:#06C;
+	border-radius:25px;
+	text-align:center;
+	position:relative;
+	margin: 0 auto;
+	transition: all 0.5s ease;
+}
+#submit:hover{
+	background-color:#333;
+	color:#FFF;
+}
+input[type='submit']{
+	visibility:hidden;
+}
+</style>
+</head>
+<body>
+<div class="login">
+	<form action="login.php" method="post">
+	<input id="user" class="loginform" type="text" placeholder="USERNAME" /> <br />
+    <input id="pass" class="loginform" type="password" placeholder="PASSWORD"/><br />
+    <input type="submit"/>
+    </form>
+    <div id=submit>SUBMIT</div>
+</div>
+</body>
+</html>
