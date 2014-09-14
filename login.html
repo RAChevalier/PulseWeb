@@ -43,6 +43,7 @@ body{
 #submit:hover{
 	background-color:#333;
 	color:#FFF;
+	cursor:pointer;
 }
 input[type='submit']{
 	visibility:hidden;
@@ -52,11 +53,12 @@ input[type='submit']{
 <body>
 <div class="login">
 	<form action="login.php" method="post">
-	<input id="user" class="loginform" type="text" placeholder="USERNAME" /> <br />
-    <input id="pass" class="loginform" type="password" placeholder="PASSWORD"/><br />
+	<input id="user" name="user" class="loginform" type="text" placeholder="USERNAME" /> <br />
+    <input id="pass" name="pass" class="loginform" type="password" placeholder="PASSWORD"/><br />
     <input type="submit"/>
+    <div id="submit" onclick="javascript:document.forms[0].submit();">SUBMIT</div>
     </form>
-    <div id=submit>SUBMIT</div>
+    
 </div>
 </body>
 </html>
