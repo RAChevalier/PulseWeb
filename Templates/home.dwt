@@ -3,6 +3,7 @@
 <!-- TemplateBeginEditable name="doctitle" -->
 <title>Pulse - Call Center</title>
 <!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
 body{
@@ -27,18 +28,22 @@ body{
 	background-color:#06C;
 	color:#FFF;
 }
+#welcome{
+	background-color:#FFF;
+}
 </style>
-<!-- TemplateBeginEditable name="head" -->
+
 <!-- TemplateEndEditable -->
 </head>
-
+<!-- TemplateBeginEditable name="body" -->
 <body>
 <div class="menu">
+	<div id="welcome"></div>
 	<div id="option" onClick="location.href='home.html'">HOME</div>
     <div id="option" onClick="location.href='user.html'">USERS</div>
     <div id="option" onClick="location.href='stats.html'">STATISTICS</div>
 </div>
-<!-- TemplateBeginEditable name="body" -->
+
 Body
 <!-- TemplateEndEditable -->
 </body>

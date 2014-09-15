@@ -1,8 +1,21 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/home.dwt" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<!-- InstanceBeginEditable name="doctitle" -->
 <title>Pulse - Call Center</title>
-<!-- InstanceEndEditable -->
+<script language="javascript">
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange=function(){
+		if(xhttp.readyState==4&&xhttp.status==200)
+		{
+			if(xhttp.responseText == "unauthorized"){
+				window.location = "login.html?unauthorized";
+			}else{
+				document.getElementById("welcome").innerHTML="Welcome, " +xhttp.responseText;
+			}
+		}
+	}
+	xhttp.open("POST", "getsession.php", true);
+	xhttp.send();
+</script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
 body{
@@ -27,19 +40,18 @@ body{
 	background-color:#06C;
 	color:#FFF;
 }
+#welcome{
+	background-color:#FFF;
+	color:#06C;
+}
 </style>
-<!-- InstanceBeginEditable name="head" -->
-<!-- InstanceEndEditable -->
 </head>
-
 <body>
 <div class="menu">
+	<div id="welcome"></div>
 	<div id="option" onClick="location.href='home.html'">HOME</div>
     <div id="option" onClick="location.href='user.html'">USERS</div>
     <div id="option" onClick="location.href='stats.html'">STATISTICS</div>
 </div>
-<!-- InstanceBeginEditable name="body" -->
-
-<!-- InstanceEndEditable -->
 </body>
-<!-- InstanceEnd --></html>
+</html>
