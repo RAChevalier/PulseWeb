@@ -29,5 +29,7 @@ if($_POST['user'] != ""){
 			}
 		}
 	}
+} else {
+	header("Location: login.html?loginfailed");
 }
 ?>
