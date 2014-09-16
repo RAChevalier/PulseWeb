@@ -9,7 +9,12 @@
 			if(xhttp.responseText == "unauthorized"){
 				window.location = "login.html?unauthorized";
 			}else{
-				document.getElementById("welcome").innerHTML="Welcome, " +xhttp.responseText;
+				var data = xhttp.responseText.split(",");
+				if(data[3] == 1){
+					window.location = "login.html?unauthorized";
+				} else{
+					document.getElementById("welcome").innerHTML="Welcome, " + data[1] + " " + data[2];
+				}
 			}
 		}
 	}
@@ -25,7 +30,7 @@ body{
 .menu{
 	background-color:#666;
 	color:#FFF;
-	width:100px;
+	width:200px;
 }
 #option{
 	height: 30px;
@@ -49,8 +54,9 @@ body{
 <body>
 <div class="menu">
 	<div id="welcome"></div>
-	<div id="option" onClick="location.href='home.html'">HOME</div>
+	<div id="option" onClick="location.href='status.html'">SYSTEM STATUS</div>
     <div id="option" onClick="location.href='user.html'">USERS</div>
+    <div id="option" onClick="location.href='agent.html'">AGENTS</div>
     <div id="option" onClick="location.href='stats.html'">STATISTICS</div>
 </div>
 </body>
