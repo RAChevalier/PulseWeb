@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Pulse - Call Center</title>
+<title>Pulse - Admin</title>
 <script language="javascript">
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange=function(){
@@ -10,50 +10,126 @@
 				window.location = "login.html?unauthorized";
 			}else{
 				var data = xhttp.responseText.split(",");
-				document.getElementById("welcome").innerHTML="Welcome, " + data[1] + " " + data[2];
+				document.getElementById("welcome").innerHTML= data[1] + " " + data[2];
 			}
 		}
 	}
 	xhttp.open("POST", "getsession.php", true);
 	xhttp.send();
+	
+	function fill(option){
+		if(option == 'status'){
+			document.getElementById('main').innerHTML="System Status";
+		} else if(option == 'users'){
+			document.getElementById('main').innerHTML="Users";
+		} else if(option == 'agents'){
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange=function(){
+				if(xhttp.readyState==4&&xhttp.status==200)
+				{
+					var content = "";
+					content += "<table cellpadding='10'><tr class='tableheader'><td>Name</td><td>Username</td><td>Added By</td><td>Level</td><td>Last Logged</td><td></td><td></td></tr>";
+					content += xhttp.responseText;
+					content += "</table>";
+					document.getElementById('main').innerHTML=content;
+				}
+			}
+			xhttp.open("GET", "fetchdata.php?q=agent", true);
+			xhttp.send();
+			
+			
+		} else if(option == 'statistics'){
+			document.getElementById('main').innerHTML="Statistics";
+		} else {
+			document.getElementById('main').innerHTML="Emergency Notification";
+		}
+	}
 </script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
 body{
 	font-family:'Open Sans';
-	background-color:#333;
+	background-color:#000;
+}
+span{
+	padding-left:5px;
+	font-size:16px;
 }
 .menu{
-	background-color:#666;
+	position:absolute;
+	background-color:#333;
 	color:#FFF;
-	width:200px;
+	width:20%;
+	height:90%;
+	top:10%;
+	left:0px;
+}
+.logo{
+	left:0px;
+	top:0px;
+	position:absolute;
+	width:20%;
+	height:10%;
+	background-color:#36C;
+	color: #FFF;
+}
+.header{
+	position:absolute;
+	top:0px;
+	left:20%;
+	height:10%;
+	width:80%;
+	background-color:#555;
+}
+.tableheader{
+	color:#069;
+}
+#main{
+	position:absolute;
+	top:10%;
+	left:20%;
+	height:90%;
+	width:80%;
+	background-color:#FFF;
 }
 #option{
 	height: 30px;
-	padding-left: 5px;
+	padding-left: 15px;
 	padding-top:10px;
 	transition: all 0.5s ease;
-	background-color:#FFF;
-	color:#06C;
+	background-color:#333;
+	color:#FFF;
 	cursor:pointer;
+	font-size:16px;
 }
 #option:hover{
 	background-color:#06C;
-	color:#FFF;
+	
 }
 #welcome{
-	background-color:#FFF;
-	color:#06C;
+	padding-left: 10px;
+	height: 50px;
+	font-size: 24px;
+	padding-top: 10px;
 }
 </style>
 </head>
 <body>
+<div class="logo">
+logo placeholder
+</div>
 <div class="menu">
+	<span>Welcome,</span>
 	<div id="welcome"></div>
-	<div id="option" onClick="location.href='status.html'">SYSTEM STATUS</div>
-    <div id="option" onClick="location.href='user.html'">USERS</div>
-    <div id="option" onClick="location.href='agent.html'">AGENTS</div>
-    <div id="option" onClick="location.href='stats.html'">STATISTICS</div>
+	<div id="option" onClick="fill('status')">SYSTEM STATUS</div>
+    <div id="option" onClick="fill('users')">USERS</div>
+    <div id="option" onClick="fill('agents')">AGENTS</div>
+    <div id="option" onClick="fill('statistics')">STATISTICS</div>
+    <div id="option" onClick="fill('notification')">EMERGENCY NOTIFICATION</div>
+</div>
+<div class="header">
+</div>
+<div id="main">
 </div>
 </body>
 </html>
