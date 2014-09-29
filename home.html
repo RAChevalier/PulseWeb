@@ -21,7 +21,19 @@
 		if(option == 'status'){
 			document.getElementById('main').innerHTML="System Status";
 		} else if(option == 'users'){
-			document.getElementById('main').innerHTML="Users";
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange=function(){
+				if(xhttp.readyState==4&&xhttp.status==200)
+				{
+					var content = "";
+					content += "<table cellpadding='10'><tr class='tableheader'><td>First Name</td><td>Surname</td><td>Mobile</td><td>Address</td><td>Suburb</td><td>Postcode</td><td>Date Joined</td><td>Age</td><td>Gender</td><td>Usage</td></tr>";
+					content += xhttp.responseText;
+					content += "</table>";
+					document.getElementById('main').innerHTML=content;
+				}
+			}
+			xhttp.open("GET", "fetchuser.php?q=agent", true);
+			xhttp.send();
 		} else if(option == 'agents'){
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange=function(){
