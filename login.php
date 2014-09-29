@@ -19,11 +19,11 @@ if($_POST['user'] != ""){
 			$first = $row['firstname'];
 			$last = $row['lastname'];
 			$level = $row['level'];
+			$_SESSION['user'] = array($user, $first, $last, $level);
+			mysql_query("insert into pulselogin (username, time) values('".$user."', now())", $conn) or die (mysql_error());
 			if($row['level'] == 0){
-				$_SESSION['user'] = array($user, $first, $last, $level);
 				header("Location: home.html");
 			} else {
-				$_SESSION['user'] = array($user, $first, $last, $level);
 				header('Location: agent.html');
 			}
 		}

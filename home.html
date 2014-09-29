@@ -20,8 +20,10 @@
 	function fill(option){
 		if(option == 'status'){
 			document.getElementById('main').innerHTML="System Status";
+			document.getElementById('header').innerHTML = "";
 		} else if(option == 'users'){
 			document.getElementById('main').innerHTML="Users";
+			document.getElementById('header').innerHTML = "";
 		} else if(option == 'agents'){
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange=function(){
@@ -37,12 +39,34 @@
 			xhttp.open("GET", "fetchdata.php?q=agent", true);
 			xhttp.send();
 			
-			
+			document.getElementById('header').innerHTML = "<div id='headeropt' onClick='newAgent()'>NEW AGENT</div>";
 		} else if(option == 'statistics'){
 			document.getElementById('main').innerHTML="Statistics";
+			document.getElementById('header').innerHTML = "";
 		} else {
 			document.getElementById('main').innerHTML="Emergency Notification";
+			document.getElementById('header').innerHTML = "";
 		}
+	}
+	
+	function viewLog(user){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange=function(){
+			if(xhttp.readyState==4&&xhttp.status==200)
+			{
+				var content = "";
+				content += "<table cellpadding='10'><tr class='tableheader'><td>No.</td><td>Date and Time</td></tr>";
+				content += xhttp.responseText;
+				content += "</table>";
+				document.getElementById('main').innerHTML=content;
+			}
+		}
+		xhttp.open("GET", "fetchdata.php?q=log&user="+user, true);
+		xhttp.send();
+	}
+	
+	function newAgent(){
+		window.location = 'newagent.php';
 	}
 </script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -75,9 +99,17 @@ span{
 }
 .header{
 	position:absolute;
+	top:5%;
+	left:20%;
+	height:5%;
+	width:80%;
+	background-color:#444;
+}
+.navigation{
+	position:absolute;
 	top:0px;
 	left:20%;
-	height:10%;
+	height:5%;
 	width:80%;
 	background-color:#555;
 }
@@ -104,13 +136,29 @@ span{
 }
 #option:hover{
 	background-color:#06C;
-	
+}
+#headeropt{
+	width: 150px;
+	color:#FFF;
+	cursor:pointer;
+	transition: all 0.5s ease;
+	text-align:center;
+	height: 100%;
+	position: relative;
+	padding-top:10px;
+}
+#headeropt:hover{
+	background-color:#06C;
 }
 #welcome{
 	padding-left: 10px;
 	height: 50px;
 	font-size: 24px;
 	padding-top: 10px;
+}
+table{
+	left:15px;
+	position:relative;
 }
 </style>
 </head>
@@ -127,7 +175,9 @@ logo placeholder
     <div id="option" onClick="fill('statistics')">STATISTICS</div>
     <div id="option" onClick="fill('notification')">EMERGENCY NOTIFICATION</div>
 </div>
-<div class="header">
+<div class="navigation">
+</div>
+<div class="header" id="header">
 </div>
 <div id="main">
 </div>
