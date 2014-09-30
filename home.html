@@ -22,10 +22,7 @@
 			document.getElementById('main').innerHTML="System Status";
 			document.getElementById('header').innerHTML = "";
 		} else if(option == 'users'){
-<<<<<<< HEAD
-			document.getElementById('main').innerHTML="Users";
 			document.getElementById('header').innerHTML = "";
-=======
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange=function(){
 				if(xhttp.readyState==4&&xhttp.status==200)
@@ -37,9 +34,8 @@
 					document.getElementById('main').innerHTML=content;
 				}
 			}
-			xhttp.open("GET", "fetchuser.php?q=agent", true);
+			xhttp.open("GET", "fetchdata.php?q=user", true);
 			xhttp.send();
->>>>>>> origin/master
 		} else if(option == 'agents'){
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange=function(){
@@ -82,7 +78,17 @@
 	}
 	
 	function newAgent(){
-		window.location = 'newagent.php';
+		var content = "<table>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>Last Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
+		content += "<tr><td class='label'>First Name</td><td><input type='text'/></td></tr>";
 	}
 </script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
