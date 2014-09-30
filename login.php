@@ -20,7 +20,7 @@ if($_POST['user'] != ""){
 			$last = $row['lastname'];
 			$level = $row['level'];
 			$_SESSION['user'] = array($user, $first, $last, $level);
-			mysql_query("insert into pulselogin (username, time) values('".$user."', now())", $conn) or die (mysql_error());
+			mysql_query("insert into pulselogin (username, logintime) values('".$user."', now())", $conn) or die (mysql_error());
 			if($row['level'] == 0){
 				header("Location: home.html");
 			} else {
