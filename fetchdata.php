@@ -23,7 +23,7 @@
 	}
 	if($q == "log"){
 		$user = $_GET["user"];
-		$query = mysql_query("select time from pulselogin where username = '".$user."' order by time desc limit 10", $conn) or die (mysql_error());
+		$query = mysql_query("select logintime from pulselogin where username = '".$user."' order by logintime desc limit 10", $conn) or die (mysql_error());
 		$result = "";
 		$i = 0;
 		while($row = mysql_fetch_row($query)){
