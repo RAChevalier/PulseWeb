@@ -51,4 +51,36 @@
 		}
 		echo $result;
 	}
+	if($q == "search"){
+		$type = $_GET['type'];
+		$result = "";
+		if($type == "agent"){
+			$c = $_GET['category'];
+			$k = $_GET['keyword'];
+			if($c == "all"){
+				$query = mysql_query("select firstname, lastname, username, addedby, level, lastlogin from pulseadmin where status = 1 and username like '%".$k."%'", $conn);
+				$numrow = mysql_num_rows($query);
+				if($numrow == 0){
+					echo "No data found";
+				} else {
+					$result .= $numrow."|";
+					while($row = mysql_fetch_assoc($query)){
+						$name = $row['firstname']." ".$row['lastname'];
+						$uname = $row['username'];
+						$addedby = $row['addedby'];
+						if($row['level'] == 0){
+							$level = 'Admin';
+						} else {
+							$level = 'Agent';
+						}
+						$lastlogin = date("D, d/m/Y H:i:s", strtotime($row['lastlogin']));
+						$viewlog = "<a href=javascript:viewLog('".$uname."')> View Log </a>";
+						$delete = "<a href='delete.php?uname=".$uname."'> Delete </a>";
+						$result .= "<tr><td>$name</td><td>$uname</td><td>$addedby</td><td>$level</td><td>$lastlogin</td><td>$viewlog</td><td>$delete</td></tr>";
+					}
+				}
+			}
+		}
+		echo $result;
+	}
 ?>
