@@ -38,7 +38,7 @@ span{
 	left:20%;
 	height:5%;
 	width:80%;
-	background-color:#555;
+	background-color:#444;
 }
 .tableheader{
 	color:#069;
@@ -103,4 +103,33 @@ table{
 	top:10px;
 	font-size:24px;
 	color:#06F;
+}
+.loader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url('img/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);
+}
+.navmenu{
+	width: 150px;
+	color:#FFF;
+	cursor:pointer;
+	transition: all 0.5s ease;
+	text-align:center;
+	height: 100%;
+	position: relative;
+	padding-top:10px;
+	float:right;
+}
+.navmenu:hover{
+	background-color:#06C;
+}
+#logout{
+	background-color:#06C;
+}
+#logout:hover{
+	background-color:#36F;
 }

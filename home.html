@@ -1,11 +1,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Pulse - Admin</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type='text/javascript' src='admin.js'></script>
 <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans'/>
 <link rel='stylesheet' type='text/css' href='admin.css'/>
 </head>
 <body>
+<div class='loader'></div>
 <div class="logo">
 logo placeholder
 </div>
@@ -19,6 +21,9 @@ logo placeholder
     <div id="option" onClick="fill('notification')">EMERGENCY NOTIFICATION</div>
 </div>
 <div class="navigation" id="navigation">
+<div class="navmenu" id="logout" onClick="logout()">LOGOUT</div>
+<div class="navmenu" onClick="goTo('map.html')">MAP</div>
+<div class="navmenu" onClick="goTo('emergency.html')">EMERGENCY</div>
 </div>
 <div class="header" id="header"></div>
 <div id="main"></div>

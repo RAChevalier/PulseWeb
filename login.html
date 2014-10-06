@@ -65,6 +65,9 @@ function check(){
 	if(url.indexOf("failed") > 0){
 		document.getElementById("error").innerHTML = "Invalid Username/Password";
 	}
+	if(url.indexOf("logout") > 0){
+		alert("Logout successful");
+	}
 }
 </script>
 </head>

@@ -1,3 +1,7 @@
+$(window).load(function() {
+	$(".loader").fadeOut("slow");
+})
+
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange=function(){
 	if(xhttp.readyState==4&&xhttp.status==200)
@@ -67,7 +71,7 @@ function viewLog(user){
 		if(xhttp.readyState==4&&xhttp.status==200)
 		{
 			var content = "";
-			content += "<table cellpadding='10'><tr class='tableheader'><td>No.</td><td>Date and Time</td></tr>";
+			content += "<table cellpadding='10'><tr class='tableheader'><td>No.</td><td>Login</td><td>Logout</td></tr>";
 			content += xhttp.responseText;
 			content += "</table>";
 			document.getElementById('main').innerHTML=content;
@@ -108,4 +112,8 @@ function searchAgent(e){
 		document.getElementById('main').innerHTML = content;
 		return false;
 	}
+}
+
+function logout(){
+	window.location = 'logout.php';
 }
