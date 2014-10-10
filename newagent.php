@@ -31,18 +31,22 @@ table{
 </head>
 <body>
 <?php 
-$username_err = $role_err = $fname_err = $lname_err = $dob_err = $gender_err = $mobile_err = $email_err = $suburb_err = $state_err = $country_err = $postcode_err = $username = $role = $first_name = $last_name = $dob = $gender = $email = $mobile = $address = $suburb = $state = $postcode = $country = "";
+$username_err = $role_err = $fname_err = $lname_err = $dob_err = $gender_err = $mobile_err = $email_err = $suburb_err = $state_err = $country_err = $address_err = $postcode_err = $username = $role = $first_name = $last_name = $dob = $gender = $email = $mobile = $address = $suburb = $state = $postcode = $country = "";
 $result_set;
 $query;
 $rows_affected;
-$password;
+$password = "pulse123";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$check=0;
 	//checking username
 	if(empty($_POST["txt_username"])){
 	$username_err = "Username is required!";
+	
 	}
 	else {
 	$username = $_POST["txt_username"];
+	
 	}
 	//checking roles
 	if($_POST["level"] == ""){
@@ -102,6 +106,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	else{
 	$email = $_POST["txt_email"];
+	if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { //check if valid email or not
+      $email_err = "Invalid email format"; 
+    }
 	}
 	//validating home address
 	if($_POST["txt_address"] == ""){
@@ -139,8 +146,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	else{
 	$country = $_POST["txt_country"];
+	$check=1;
 	}
-	/*
+	if($check){
 	$sql = "insert into pulseadmin(username,password,firstname,lastname,dob,gender,mobile,email,address,suburb,state,country,postcode)";
     $sql .= "values ('$username','$password','$first_name','$last_name','$dob','$gender','$mobile','$email','$address','$suburb','$state','$country','$postcode')";
     
@@ -152,8 +160,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     print($rows_affected);
     print("<div class='container'> agent row has been added to the pulseagent table");
     print(" (username $username)\n</div>");
-	*/
+	$check=0;
+	header('location:http://localhost/pulseweb/newagent.php');
+	exit();
 	}
+	}
+	
+	
 	?>
 <div class='container'>
 <form name='reg' method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
