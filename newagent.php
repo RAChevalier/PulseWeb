@@ -1,5 +1,14 @@
 <?PHP
 	include ('connect.php');
+	session_start();
+if(isset($_SESSION['user']) && $_SESSION['user'][3] == 0){
+	//echo $_SESSION['user'][0].",".$_SESSION['user'][1].",".$_SESSION['user'][2].",".$_SESSION['user'][3];
+} else {
+	echo "unauthorized access!! Please log in as Admin again <input type='button' value = 'log in' onclick =\"location.href='login.html'\" />" ;
+	exit;
+}
+	
+	
 	
 	
 ?>
@@ -31,37 +40,29 @@ table{
 </head>
 <body>
 <?php 
-$username_err = $role_err = $fname_err = $lname_err = $dob_err = $gender_err = $mobile_err = $email_err = $suburb_err = $state_err = $country_err = $address_err = $postcode_err = $username = $role = $first_name = $last_name = $dob = $gender = $email = $mobile = $address = $suburb = $state = $postcode = $country = "";
+
+//echo $_SESSION['user'][0] . $_SESSION['user'][3] ;
+$addedby = $_SESSION['user'][0];
+
+$username_err = $role_err = $fname_err = $lname_err = $dob_err = $gender_err = $mobile_err = $email_err = $suburb_err = $state_err = $country_err = $address_err = $postcode_err = $username = $role = $first_name = $last_name = $dob = $gender = $email = $mobile = $address = $suburb = $state = $postcode = $country = $length ="";
 $result_set;
 $query;
 $rows_affected;
-$password = "pulse123";
+$password = md5("pulse123");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$check=0;
-	//checking username
-	if(empty($_POST["txt_username"])){
-	$username_err = "Username is required!";
+
 	
-	}
-	else {
-	$username = $_POST["txt_username"];
-	
-	}
-	//checking roles
-	if($_POST["level"] == ""){
-	$role_err = "role must be chosen!";
-	}
-	else{
-	$role = $_POST["level"];
-	}
 	//checking first name
 	if(empty($_POST["txt_first_name"])){
 	$fname_err = "first name is required!";
+	
 	}else{
 	$first_name = $_POST["txt_first_name"];
 	if (!preg_match("/^[a-zA-Z ]*$/",$first_name)) { // only letters and whitespace is allowed in first name
 	$fname_err = "Only letters and white space allowed"; 
+
 	}
 	}
 	//checking last name
@@ -73,7 +74,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (!preg_match("/^[a-zA-Z ]*$/",$last_name)) { // only letters and whitespace is allowed in last name
 	$lname_err = "Only letters and white space allowed"; 
 	}
+	$username = substr($last_name,0,1);
+	$username = $username . '_' . $first_name;
+	//$lname_err = $username;
+	
+	
 	}
+	//checking roles
+	if($_POST["level"] == ""){
+	$role_err = "role must be chosen!";
+	}
+	else{
+	$role = $_POST["level"];
+	}
+	
 	//checking date of birth is empty or not
 	if(empty($_POST["txt_dob"])){
 	$dob_err = "date of birth is required!";
@@ -95,9 +109,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	else{
 	$mobile = $_POST["txt_mobile"];
+	$length = strlen((string)$mobile);
 		if(!preg_match("/^[0-9]*$/",$mobile)) { // only numbers are allowed in mobile number field
 			$mobile_err = "Only numbers are allowed"; 
+			
 			}
+		if($length > 10){
+		$mobile_err = "Maximum 10 numbers are allowed!!";
+		
+		}
 	}
 	
 	//checking email address is filled or not
@@ -123,6 +143,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	else {
 	$suburb = $_POST["txt_suburb"];
+	if (!preg_match("/^[a-zA-Z ]*$/",$suburb)) { // only letters and whitespace is allowed in first name
+			$suburb_err = "Only letters are allowed"; 
+			}
 	}
 	//validating state of address
 	if($_POST["txt_state"] == ""){
@@ -138,6 +161,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	else{
 	$postcode = $_POST["txt_postcode"];
+	if(!preg_match("/^[0-9]*$/",$postcode)) { // only numbers are allowed in mobile number field
+			$postcode_err = "Only numbers are allowed"; 
+			}
 	}
 	
 	//validating country
@@ -148,20 +174,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$country = $_POST["txt_country"];
 	$check=1;
 	}
+	
+	/**username validation
+	$sql = "select * from pulseadmin where username = '" . $username . "'";
+	$result = mysql_query($sql) or die (mysql_error());
+	if($result){
+		echo "<div class='containter'> Duplicate username!! your name is already registered on database. Please Try again<input type='button' value = 'Go back' onclick =\"window.history.back()\" /></div>";
+		exit();
+		}
+	else{
+	$check=1;
+	}**/
 	if($check){
-	$sql = "insert into pulseadmin(username,password,firstname,lastname,dob,gender,mobile,email,address,suburb,state,country,postcode)";
-    $sql .= "values ('$username','$password','$first_name','$last_name','$dob','$gender','$mobile','$email','$address','$suburb','$state','$country','$postcode')";
+	$sql = "insert into pulseadmin(username,password,firstname,lastname,dob,gender,mobile,email,address,suburb,state,country,postcode,addedby,level)";
+    $sql .= "values ('$username','$password','$first_name','$last_name','$dob','$gender','$mobile','$email','$address','$suburb','$state','$country','$postcode','$addedby','$role')";
     
-    $result = mysql_query($sql) or die (mysql_error());
+    $result = mysql_query($sql) or die (mysql_error() . "<div class='containter'> Duplicate username!! your name is already registered on database. Please Try again<input type='button' value = 'Go back' onclick =\"window.history.back()\" /></div>");
     
     $rows_affected = mysql_affected_rows($conn);
     
     mysql_close($conn);
-    print($rows_affected);
+    print($rows_affected );
     print("<div class='container'> agent row has been added to the pulseagent table");
-    print(" (username $username)\n</div>");
+    print(" (username $username) <input type='button' value = 'Add new agent' onclick =\"location.href='newagent.php'\" /> or <input type='button' value = 'Home page' onclick =\"location.href='home.html'\" /> \n</div>");
 	$check=0;
-	header('location:http://localhost/pulseweb/newagent.php');
+	//header('location:http://localhost/pulseweb/newagent.php');
 	exit();
 	}
 	}
@@ -171,19 +208,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class='container'>
 <form name='reg' method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
 <table cellpadding="2px">
-<tr><td class='label'>Username :</td><td><input type='text' name='txt_username' value="<?php echo htmlspecialchars($username);?>"/></td><td class='err'><?php echo $username_err ?></td></tr>
-<tr><td class='label'>Role :</td><td><select name='level'><option value=''></option><option value='0' <?php if (isset($role) && $role=='0') echo "selected";?> >Admin</option><option value='1' <?php if (isset($role) && $role=='1') echo "selected";?>>Agent</option></select></td><td class='err'><?php echo $role_err ?></td></tr>
+
+
 <tr><td class='label'>First Name :</td><td><input type='text' name='txt_first_name' value="<?php echo htmlspecialchars($first_name);?>"/></td><td class='err'><?PHP echo $fname_err; ?></td></tr>
 <tr><td class='label'>Last Name :</td><td><input type='text' name='txt_last_name' value="<?php echo htmlspecialchars($last_name);?>"/></td><td class='err'><?PHP echo $lname_err; ?></td></tr>
+<tr><td class='label'>Role :</td><td><select name='level'><option value=''></option><option value='0' <?php if (isset($role) && $role=='0') echo "selected";?> >Admin</option><option value='1' <?php if (isset($role) && $role=='1') echo "selected";?>>Agent</option></select></td><td class='err'><?php echo $role_err ?></td></tr>
 <tr><td class='label'>Date of Birth :</td><td><input type='text' name='txt_dob' placeholder="YYYY-MM-DD" value="<?php echo htmlspecialchars($dob);?>"/></td><td class='err'><?PHP echo $dob_err; ?></td></tr>
 <tr><td class='label'>Gender :</td><td><select name='gender'><option value=''></option><option value='M' <?php if (isset($gender) && $gender=='M') echo "selected";?>>Male</option><option value='F' <?php if (isset($gender) && $gender=='F') echo "selected";?>>Female</option></select></td><td class='err'><?PHP echo $gender_err; ?></td></tr>
 <tr><td class='label'>Mobile :</td><td><input type='text' name='txt_mobile' value="<?php echo htmlspecialchars($mobile);?>" /></td><td class='err'><?PHP echo $mobile_err; ?></td></tr>
 <tr><td class='label'>Email :</td><td><input type='text' name='txt_email' value="<?php echo htmlspecialchars($email);?>" /></td><td class='err'><?PHP echo $email_err; ?></td></tr>
 <tr><td class='label'>Address :</td><td><input type='text' name='txt_address' value="<?php echo htmlspecialchars($address);?>" /></td><td class='err'><?PHP echo $address_err; ?></td></tr>
-<tr><td class='label'>Suburb :</td><td><input type='text' name='txt_suburb'/></td><td class='err'><?PHP echo $suburb_err; ?></td></tr>
-<tr><td class='label'>State :</td><td><input type='text' name='txt_state'/></td><td class='err'><?PHP echo $state_err; ?></td></tr>
-<tr><td class='label'>Postcode :</td><td><input type='text' name='txt_postcode'/></td><td class='err'><?PHP echo $postcode_err; ?></td></tr>
-<tr><td class='label'>Country :</td><td><input type='text' name='txt_country'/></td><td class='err'><?PHP echo $country_err; ?></td></tr>
+<tr><td class='label'>Suburb :</td><td><input type='text' name='txt_suburb' value="<?php echo htmlspecialchars($suburb);?>" /></td><td class='err'><?PHP echo $suburb_err; ?></td></tr>
+<tr><td class='label'>State :</td><td><input type='text' name='txt_state' value="<?php echo htmlspecialchars($state);?>"/></td><td class='err'><?PHP echo $state_err; ?></td></tr>
+<tr><td class='label'>Postcode :</td><td><input type='text' name='txt_postcode' value="<?php echo htmlspecialchars($postcode);?>"/></td><td class='err'><?PHP echo $postcode_err; ?></td></tr>
+<tr><td class='label'>Country :</td><td><input type='text' name='txt_country' value="<?php echo htmlspecialchars($country);?>"/></td><td class='err'><?PHP echo $country_err; ?></td></tr>
 <tr><td><input type='submit' name='btn_register' value='Register' /></td><td><input type='button' name='btn_clear' value='clear' /></td></tr>
 </table>
 </form>
