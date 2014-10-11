@@ -1,16 +1,9 @@
 <?PHP
 	include ('connect.php');
 	session_start();
-if(isset($_SESSION['user']) && $_SESSION['user'][3] == 0){
-	//echo $_SESSION['user'][0].",".$_SESSION['user'][1].",".$_SESSION['user'][2].",".$_SESSION['user'][3];
-} else {
-	echo "unauthorized access!! Please log in as Admin again <input type='button' value = 'log in' onclick =\"location.href='login.html'\" />" ;
-	exit;
-}
-	
-	
-	
-	
+if(!isset($_SESSION['user']) || $_SESSION['user'][3] == 1){
+	header('Location:login.html?unauthorized');
+}	
 ?>
 <html>
 <head>
@@ -94,10 +87,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$dob_err = "Date of birth is required";
 	$check = false;
 	}
-	elseif (!preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4})$/",$date)){
+	elseif (!preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$_POST["txt_dob"])){
 		$dob_err = "Invalid date format";
+		$check = false;
 	} else{
-	list($d, $m, $y) = split("/", $_POST["txt_dob"]);
+	list($d, $m, $y) = split("-", $_POST["txt_dob"]);
 	$dob = $y."-".$m."-".$d;
 	}
 	//checking gender is chosen or not
@@ -152,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$check = false;
 	}
 	else {
-	$suburb = $_POST["txt_suburb"];
+	$suburb = ucfirst($_POST["txt_suburb"]);
 	if (!preg_match("/^[a-zA-Z ]*$/",$suburb)) { // only letters and whitespace is allowed in first name
 			$suburb_err = "Only letters are allowed"; 
 			$check = false;
@@ -164,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$check = false;
 	}
 	else{
-	$state = $_POST["txt_state"];
+	$state = strtoupper($_POST["txt_state"]);
 	}
 	
 	//validing postcode
@@ -186,7 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$check = false;
 	}
 	else{
-	$country = $_POST["txt_country"];
+	$country = ucfirst($_POST["txt_country"]);
 	}
 	
 	/**username validation
@@ -200,8 +194,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$check=1;
 	}**/
 	if($check){
-	$sql = "insert into pulseadmin(username,password,firstname,lastname,dob,gender,mobile,email,address,suburb,state,country,postcode,addedby,level)";
-    $sql .= "values ('$username','$password','$first_name','$last_name','$dob','$gender','$mobile','$email','$address','$suburb','$state','$country','$postcode','$addedby','$role')";
+	$sql = "insert into pulseadmin(username,password,firstname,lastname,dob,gender,mobile,email,address,suburb,state,country,postcode,addedby,level,status)";
+    $sql .= "values ('$username','$password','$first_name','$last_name','$dob','$gender','$mobile','$email','$address','$suburb','$state','$country','$postcode','$addedby','$role', 1)";
     
     $result = mysql_query($sql) or die (mysql_error() . "<div class='containter'> Duplicated username. Please alter name.<input type='button' value = 'Go back' onclick =\"window.history.back()\" /></div>");
     
@@ -242,7 +236,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </tr>
       <tr>
         <td class='label'>Date of Birth :</td>
-        <td><input type='text' name='txt_dob' placeholder="DD/MM/YYYY" maxlength="10" value="<?php echo htmlspecialchars($dob);?>"/></td>
+        <td><input type='text' name='txt_dob' placeholder="DD-MM-YYYY" maxlength="10" value="<?php echo htmlspecialchars($dob);?>"/></td>
         <td class='err'><?PHP echo $dob_err; ?></td>
       </tr>
       <tr>
