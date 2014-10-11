@@ -16,25 +16,25 @@ if(isset($_SESSION['user']) && $_SESSION['user'][3] == 0){
 <head>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
-body{
-	font-family:'Open Sans';
-	background-color:#222;
+body {
+	font-family: 'Open Sans';
+	background-color: #222;
 }
-table{
-	background-color:#555;
-	position:relative;
-	margin:auto;
-	top:0;
-	bottom:0;
-	left:0;
-	right:0;
+table {
+	background-color: #555;
+	position: relative;
+	margin: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
-.label{
-	color:#09C;
-	text-align:right;
+.label {
+	color: #09C;
+	text-align: right;
 }
-.err{
-	color:#C00;
+.err {
+	color: #C00;
 }
 </style>
 </head>
@@ -219,25 +219,82 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
 	?>
 <div class='container'>
-<form name='reg' method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
-<table cellpadding="2px">
-
-
-<tr><td class='label'>First Name :</td><td><input type='text' name='txt_first_name' value="<?php echo htmlspecialchars($first_name);?>"/></td><td class='err'><?PHP echo $fname_err; ?></td></tr>
-<tr><td class='label'>Last Name :</td><td><input type='text' name='txt_last_name' value="<?php echo htmlspecialchars($last_name);?>"/></td><td class='err'><?PHP echo $lname_err; ?></td></tr>
-<tr><td class='label'>Role :</td><td><select name='level'><option value=''></option><option value='0' <?php if (isset($role) && $role=='0') echo "selected";?> >Admin</option><option value='1' <?php if (isset($role) && $role=='1') echo "selected";?>>Agent</option></select></td><td class='err'><?php echo $role_err ?></td></tr>
-<tr><td class='label'>Date of Birth :</td><td><input type='text' name='txt_dob' placeholder="DD/MM/YYYY" maxlength="10" value="<?php echo htmlspecialchars($dob);?>"/></td><td class='err'><?PHP echo $dob_err; ?></td></tr>
-<tr><td class='label'>Gender :</td><td><select name='gender'><option value=''></option><option value='M' <?php if (isset($gender) && $gender=='M') echo "selected";?>>Male</option><option value='F' <?php if (isset($gender) && $gender=='F') echo "selected";?>>Female</option></select></td><td class='err'><?PHP echo $gender_err; ?></td></tr>
-<tr><td class='label'>Mobile :</td><td><input type='text' name='txt_mobile' maxlength="10" value="<?php echo htmlspecialchars($mobile);?>" /></td><td class='err'><?PHP echo $mobile_err; ?></td></tr>
-<tr><td class='label'>Email :</td><td><input type='text' name='txt_email' value="<?php echo htmlspecialchars($email);?>" /></td><td class='err'><?PHP echo $email_err; ?></td></tr>
-<tr><td class='label'>Address :</td><td><input type='text' name='txt_address' value="<?php echo htmlspecialchars($address);?>" /></td><td class='err'><?PHP echo $address_err; ?></td></tr>
-<tr><td class='label'>Suburb :</td><td><input type='text' name='txt_suburb' value="<?php echo htmlspecialchars($suburb);?>" /></td><td class='err'><?PHP echo $suburb_err; ?></td></tr>
-<tr><td class='label'>State :</td><td><input type='text' name='txt_state' value="<?php echo htmlspecialchars($state);?>"/></td><td class='err'><?PHP echo $state_err; ?></td></tr>
-<tr><td class='label'>Postcode :</td><td><input type='text' name='txt_postcode' value="<?php echo htmlspecialchars($postcode);?>"/></td><td class='err'><?PHP echo $postcode_err; ?></td></tr>
-<tr><td class='label'>Country :</td><td><input type='text' name='txt_country' value="<?php echo htmlspecialchars($country);?>"/></td><td class='err'><?PHP echo $country_err; ?></td></tr>
-<tr><td></td><td><input type='submit' name='btn_register' value='Register' /></td></tr>
-</table>
-</form>
+  <form name='reg' method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
+    <table cellpadding="2px">
+      <tr>
+        <td class='label'>First Name :</td>
+        <td><input type='text' name='txt_first_name' value="<?php echo htmlspecialchars($first_name);?>"/></td>
+        <td class='err'><?PHP echo $fname_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Last Name :</td>
+        <td><input type='text' name='txt_last_name' value="<?php echo htmlspecialchars($last_name);?>"/></td>
+        <td class='err'><?PHP echo $lname_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Role :</td>
+        <td><select name='level'>
+            <option value=''></option>
+            <option value='0' <?php if (isset($role) && $role=='0') echo "selected";?> >Admin</option>
+            <option value='1' <?php if (isset($role) && $role=='1') echo "selected";?>>Agent</option>
+          </select></td>
+        <td class='err'><?php echo $role_err ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Date of Birth :</td>
+        <td><input type='text' name='txt_dob' placeholder="DD/MM/YYYY" maxlength="10" value="<?php echo htmlspecialchars($dob);?>"/></td>
+        <td class='err'><?PHP echo $dob_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Gender :</td>
+        <td><select name='gender'>
+            <option value=''></option>
+            <option value='M' <?php if (isset($gender) && $gender=='M') echo "selected";?>>Male</option>
+            <option value='F' <?php if (isset($gender) && $gender=='F') echo "selected";?>>Female</option>
+          </select></td>
+        <td class='err'><?PHP echo $gender_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Mobile :</td>
+        <td><input type='text' name='txt_mobile' maxlength="10" value="<?php echo htmlspecialchars($mobile);?>" /></td>
+        <td class='err'><?PHP echo $mobile_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Email :</td>
+        <td><input type='text' name='txt_email' value="<?php echo htmlspecialchars($email);?>" /></td>
+        <td class='err'><?PHP echo $email_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Address :</td>
+        <td><input type='text' name='txt_address' value="<?php echo htmlspecialchars($address);?>" /></td>
+        <td class='err'><?PHP echo $address_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Suburb :</td>
+        <td><input type='text' name='txt_suburb' value="<?php echo htmlspecialchars($suburb);?>" /></td>
+        <td class='err'><?PHP echo $suburb_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>State :</td>
+        <td><input type='text' name='txt_state' value="<?php echo htmlspecialchars($state);?>"/></td>
+        <td class='err'><?PHP echo $state_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Postcode :</td>
+        <td><input type='text' name='txt_postcode' value="<?php echo htmlspecialchars($postcode);?>"/></td>
+        <td class='err'><?PHP echo $postcode_err; ?></td>
+      </tr>
+      <tr>
+        <td class='label'>Country :</td>
+        <td><input type='text' name='txt_country' value="<?php echo htmlspecialchars($country);?>"/></td>
+        <td class='err'><?PHP echo $country_err; ?></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type='submit' name='btn_register' value='Register' /></td>
+      </tr>
+    </table>
+  </form>
 </div>
 </body>
 </html>
