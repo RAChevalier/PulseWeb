@@ -21,10 +21,14 @@ if($_POST['user'] != ""){
 			$level = $row['level'];
 			$_SESSION['user'] = array($user, $first, $last, $level);
 			mysql_query("insert into pulselogin (username, logintime) values('".$user."', now())", $conn) or die (mysql_error());
-			if($row['level'] == 0){
-				header("Location: home.html");
+			if($p == md5('pulse123')){
+				header("Location: newpassword.html");
 			} else {
-				header('Location: agent.html');
+				if($row['level'] == 0){
+					header("Location: home.html");
+				} else {
+					header('Location: agent.html');
+				}
 			}
 		}
 	}
