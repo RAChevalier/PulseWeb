@@ -11,6 +11,9 @@ xhttp.onreadystatechange=function(){
 		}else{
 			var data = xhttp.responseText.split(",");
 			document.getElementById("welcome").innerHTML= data[1] + " " + data[2];
+			if(document.URL.indexOf('reset') > 0){
+				alert('Password has been reset successfully');
+			}
 		}
 	}
 }

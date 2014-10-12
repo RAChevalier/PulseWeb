@@ -20,7 +20,8 @@ if($_POST['user'] != ""){
 			$last = $row['lastname'];
 			$level = $row['level'];
 			$_SESSION['user'] = array($user, $first, $last, $level);
-			mysql_query("insert into pulselogin (username, logintime) values('".$user."', now())", $conn) or die (mysql_error());
+			mysql_query("insert into pulselogin (username, logintime) values('".$user."', '".$date."')", $conn) or die (mysql_error());
+			mysql_query("update pulseadmin set lastlogin='".$date."' where username='".$user."'", $conn) or die (mysql_error());
 			if($p == md5('pulse123')){
 				header("Location: newpassword.html");
 			} else {
