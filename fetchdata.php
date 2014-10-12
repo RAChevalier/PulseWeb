@@ -17,7 +17,8 @@
 			$lastlogin = date("D, d/m/Y H:i:s", strtotime($row['lastlogin']));
 			$viewlog = "<a href=javascript:viewLog('".$uname."')> View Log </a>";
 			$delete = "<a href='delete.php?uname=".$uname."'> Delete </a>";
-			$result .= "<tr><td>$name</td><td>$uname</td><td>$addedby</td><td>$level</td><td>$lastlogin</td><td>$viewlog</td><td>$delete</td></tr>";
+			$resetpass = "<a href='resetpass.php?uname=".$uname."'> Reset Password </a>";
+			$result .= "<tr><td>$name</td><td>$uname</td><td>$addedby</td><td>$level</td><td>$lastlogin</td><td>$viewlog</td><td>$delete</td><td>$resetpass</td></tr>";
 		}
 		echo $result;
 	}
