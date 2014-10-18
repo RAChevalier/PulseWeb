@@ -22,6 +22,23 @@
 		}
 		echo $result;
 	}
+	if($q == "emergency"){
+		$query = mysql_query("select u.firstname, u.lastname, e.logid, e.starttime from pulseuser u, pulseemergency e where u.email = e.email and e.status = 1", $conn) or die (mysql_error());
+		$result = "INCOMING (".mysql_num_rows($query).")";
+		while($row = mysql_fetch_assoc($query)){
+			if($row['starttime']){
+				$current = new DateTime();
+				$starttime = new DateTime($row['starttime']);
+				$timediff = $starttime->diff($current);
+				$diff = $timediff->format('%h hours %i minutes %s seconds');
+				$diff .= ' ago';
+			} else {
+				$diff = "NULL";
+			}
+			$result .= "<div class='iemergency' id='".$row['logid']."' onclick='handle(".$row['logid'].")'><span class='name'>".$row['firstname']." ".$row['lastname']."</span><br/><span class='time'>".$diff."</span></div>";
+		}
+		echo $result;
+	}
 	if($q == "log"){
 		$user = $_GET["user"];
 		$query = mysql_query("select logintime, logouttime from pulselogin where username = '".$user."' order by logintime desc limit 10", $conn) or die (mysql_error());

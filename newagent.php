@@ -11,19 +11,20 @@ if(!isset($_SESSION['user']) || $_SESSION['user'][3] == 1){
 <style>
 body {
 	font-family: 'Open Sans';
-	background-color: #222;
+	background-color: #333;
+	font-size:36px;
 }
 table {
-	background-color: #555;
 	position: relative;
 	margin: auto;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
+	font-size:24px;
 }
 .label {
-	color: #09C;
+	color: #FFF;
 	text-align: right;
 }
 .err {

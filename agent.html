@@ -1,41 +1,129 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans'/>
 <title>Pulse - Agent</title>
 <style>
+body{
+	font-family:'Open Sans';
+}
 .header{
 	position:absolute;
-	height:10%;
+	height:5%;
 	width:100%;
+	top:0px;
+	left:0px;
+	padding-left:5px;
 }
 .incoming{
 	position:absolute;
 	height:90%;
 	width:15%;
-	top:10%;
+	top:5%;
+	left:0px;
+	padding-left:5px;
 }
 .ongoing{
 	position:absolute;
 	height:90%;
 	width:15%;
-	top:10%;
+	top:5%;
 	left:15%;
 }
 .detail{
 	position:absolute;
 	height:90%;
 	width:70%;
-	top:10%;
+	top:5%;
 	left:30%;
 }
+.iemergency{
+	background-color:#FFF;
+	color:#000;
+	transition: all 0.5s ease;
+	width:100%;
+}
+.iemergency:hover{
+	background-color:#09F;
+	color:#FFF;
+}
+.name{
+	font-size:24px;
+}
+.time{
+	font-size:12px;
+	font-style:italic;
+}
+#logout{
+	color:#999;
+	font-size:24px;
+	float:right;
+	height:100%;
+}
+#logout:hover{
+	cursor:pointer;
+}
+#welcome{
+	float:left;
+	color:#06C;
+	height:100%;
+	width:300px;
+	font-size:30px;
+}
+.agent{
+	color:#999;
+}
 </style>
+<script type='text/javascript'>
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange=function(){
+	if(xhttp.readyState==4&&xhttp.status==200)
+	{
+		if(xhttp.responseText == "unauthorized"){
+			window.location = "login.html?unauthorized";
+		} else {
+			var values = xhttp.responseText.split(",");
+			document.getElementById('welcome').innerHTML = "<span class='agent'>AGENT:</span> " + values[1] + " " + values[2];
+			loademergency();
+		}
+	}
+}
+xhttp.open("GET", "getsession.php", true);
+xhttp.send();
+function loademergency(){
+	xhttp.onreadystatechange=function(){
+		if(xhttp.readyState==4&&xhttp.status==200)
+		{
+			if(xhttp.responseText.indexOf('mysql') == -1)
+			{
+				document.getElementById('incoming').innerHTML = xhttp.responseText;
+			}
+		}
+	}
+	xhttp.open("GET", "fetchdata.php?q=emergency", true);
+	xhttp.send();
+	setTimeout(loademergency, 10000);
+}
+function handle(logid){
+	xhttp.onreadystatechange=function(){
+		if(xhttp.readyState==4&&xhttp.status==200)
+		{
+			document.getElementById('ongoing').innerHTML += xhttp.responseText;
+		}
+	}
+	xhttp.open("GET", "updatedata.php?q=handle&id=" + logid, true);
+	xhttp.send();
+}
+function logout(){
+	window.location = 'logout.php';
+}
+</script>
 </head>
 
-<body>
-<div class='header'>Header</div>
-<div class='incoming'>Incoming</div>
-<div class='ongoing'>Ongoing</div>
+<body">
+<div class='header'><div id='welcome'></div><div id='logout' onclick='logout()'>LOGOUT</div></div>
+<div class='incoming' id='incoming'>INCOMING</div>
+<div class='ongoing' id='ongoing'>ONGOING</div>
 <div class='detail'>Detail</div>
 </body>
 </html>

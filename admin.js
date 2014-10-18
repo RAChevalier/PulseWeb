@@ -10,8 +10,12 @@ xhttp.onreadystatechange=function(){
 			window.location = "login.html?unauthorized";
 		}else{
 			var data = xhttp.responseText.split(",");
+			if(data[3] != 0){
+				window.location = "agent.html";
+			}
 			document.getElementById("welcome").innerHTML= data[1] + " " + data[2];
 			if(document.URL.indexOf('reset') > 0){
+				fill('agents');
 				alert('Password has been reset successfully');
 			}
 		}
