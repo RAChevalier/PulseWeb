@@ -1,6 +1,5 @@
 <?PHP
-	include ('connect.php');
-	session_start();
+	include 'connect.php';
 if(!isset($_SESSION['user']) || $_SESSION['user'][3] == 1){
 	header('Location:login.html?unauthorized');
 }	
@@ -237,7 +236,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </tr>
       <tr>
         <td class='label'>Date of Birth :</td>
-        <td><input type='text' name='txt_dob' placeholder="DD-MM-YYYY" maxlength="10" value="<?php echo htmlspecialchars($dob);?>"/></td>
+        <td><input type='date' name='txt_dob' value="<?php echo htmlspecialchars($dob);?>"/></td>
         <td class='err'><?PHP echo $dob_err; ?></td>
       </tr>
       <tr>

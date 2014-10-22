@@ -1,6 +1,5 @@
 <?PHP
 	include 'connect.php';
-	session_start();
 	$q = $_GET['q'];
 	$logid = $_GET['id'];
 	$user = $_SESSION['user'][0];

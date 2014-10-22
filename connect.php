@@ -7,4 +7,5 @@
 	mysql_select_db('b5_15320225_pulse') or die('Could not select database');
 	date_default_timezone_set("Australia/Melbourne");
 	$date = date('Y-m-d H:i:s');
+	session_start();
 ?>

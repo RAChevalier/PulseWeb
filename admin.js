@@ -10,7 +10,7 @@ xhttp.onreadystatechange=function(){
 			window.location = "login.html?unauthorized";
 		}else{
 			var data = xhttp.responseText.split(",");
-			if(data[3] != 0){
+			if(data[3] == 1){
 				window.location = "agent.html";
 			}
 			document.getElementById("welcome").innerHTML= data[1] + " " + data[2];
@@ -26,8 +26,21 @@ xhttp.send();
 
 function fill(option){
 	if(option == 'status'){
-		document.getElementById('main').innerHTML="System Status";
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange=function(){
+			if(xhttp.readyState==4&&xhttp.status==200)
+			{
+				var content = "";
+				
+				content += xhttp.responseText;
+				
+				document.getElementById('main').innerHTML=content;
+			}
+		}
+		xhttp.open("GET", "systemstatus.php", true);
+		xhttp.send();
 		document.getElementById('header').innerHTML = "";
+		
 	} else if(option == 'users'){
 		document.getElementById('header').innerHTML = "";
 		var xhttp = new XMLHttpRequest();
@@ -64,7 +77,19 @@ function fill(option){
 		header += "<input type='text' id='keyword' placeholder='Search...' onkeypress='return searchAgent(event)'/></div>";
 		document.getElementById('header').innerHTML = header;
 	} else if(option == 'statistics'){
-		document.getElementById('main').innerHTML="Statistics";
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange=function(){
+			if(xhttp.readyState==4&&xhttp.status==200)
+			{
+				var content = "";
+				
+				content += xhttp.responseText;
+				
+				document.getElementById('main').innerHTML=content;
+			}
+		}
+		xhttp.open("GET", "statistic.php", true);
+		xhttp.send();
 		document.getElementById('header').innerHTML = "";
 	} else {
 		document.getElementById('main').innerHTML="Emergency Notification";

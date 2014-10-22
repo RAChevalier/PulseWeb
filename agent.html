@@ -14,6 +14,7 @@ body{
 	top:0px;
 	left:0px;
 	padding-left:5px;
+	border-bottom:solid 1px #BBB;
 }
 .incoming{
 	position:absolute;
@@ -22,6 +23,7 @@ body{
 	top:5%;
 	left:0px;
 	padding-left:5px;
+	padding-top:5px;
 }
 .ongoing{
 	position:absolute;
@@ -29,6 +31,8 @@ body{
 	width:15%;
 	top:5%;
 	left:15%;
+	padding-left:5px;
+	padding-top:5px;
 }
 .detail{
 	position:absolute;
@@ -36,6 +40,8 @@ body{
 	width:70%;
 	top:5%;
 	left:30%;
+	padding-left:5px;
+	padding-top:5px;
 }
 .iemergency{
 	background-color:#FFF;
@@ -67,7 +73,7 @@ body{
 	float:left;
 	color:#06C;
 	height:100%;
-	width:300px;
+	width:1000px;
 	font-size:30px;
 }
 .agent{
@@ -82,15 +88,20 @@ xhttp.onreadystatechange=function(){
 		if(xhttp.responseText == "unauthorized"){
 			window.location = "login.html?unauthorized";
 		} else {
+			if(xhttp.responseText.indexOf('mysql') > 0){
+				location.reload();
+			}
 			var values = xhttp.responseText.split(",");
 			document.getElementById('welcome').innerHTML = "<span class='agent'>AGENT:</span> " + values[1] + " " + values[2];
 			loademergency();
+			loadongoing();
 		}
 	}
 }
 xhttp.open("GET", "getsession.php", true);
 xhttp.send();
 function loademergency(){
+	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange=function(){
 		if(xhttp.readyState==4&&xhttp.status==200)
 		{
@@ -104,11 +115,28 @@ function loademergency(){
 	xhttp.send();
 	setTimeout(loademergency, 10000);
 }
-function handle(logid){
+function loadongoing(){
+	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange=function(){
 		if(xhttp.readyState==4&&xhttp.status==200)
 		{
-			document.getElementById('ongoing').innerHTML += xhttp.responseText;
+			if(xhttp.responseText.indexOf('mysql') == -1)
+			{
+				document.getElementById('ongoing').innerHTML = xhttp.responseText;
+			}
+		}
+	}
+	xhttp.open("GET", "fetchdata.php?q=ongoing", true);
+	xhttp.send();
+	setTimeout(loadongoing, 10000);
+}
+function handle(logid){
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange=function(){
+		if(xhttp.readyState==4&&xhttp.status==200)
+		{
+			document.getElementById('ongoing').appendChild(document.getElementById(logid));
+			document.getElementById(logid).setAttribute('onclick', 'detail('+logid+')');
 		}
 	}
 	xhttp.open("GET", "updatedata.php?q=handle&id=" + logid, true);

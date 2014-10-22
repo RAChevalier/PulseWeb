@@ -2,6 +2,8 @@
 	include 'connect.php';
 	
 	$q = $_GET['q'];
+	
+	/*AGENT*/
 	if($q == "agent"){
 		$query = mysql_query("select firstname, lastname, username, addedby, level, lastlogin from pulseadmin where status = 1", $conn) or die (mysql_error());
 		$result = "";
@@ -22,6 +24,8 @@
 		}
 		echo $result;
 	}
+	
+	/*EMERGENCY*/
 	if($q == "emergency"){
 		$query = mysql_query("select u.firstname, u.lastname, e.logid, e.starttime from pulseuser u, pulseemergency e where u.email = e.email and e.status = 1", $conn) or die (mysql_error());
 		$result = "INCOMING (".mysql_num_rows($query).")";
@@ -39,6 +43,8 @@
 		}
 		echo $result;
 	}
+	
+	/*LOG*/
 	if($q == "log"){
 		$user = $_GET["user"];
 		$query = mysql_query("select logintime, logouttime from pulselogin where username = '".$user."' order by logintime desc limit 10", $conn) or die (mysql_error());
@@ -56,6 +62,8 @@
 		}
 		echo $result;
 	}
+	
+	/*USER*/
 	if($q == "user"){
 		$query = mysql_query("select firstname, lastname, mobile, address, suburb, postcode, subscriptionstart, dob, gender from pulseuser", $conn) or die (mysql_error());
 		$result = "";
@@ -74,6 +82,8 @@
 		}
 		echo $result;
 	}
+	
+	/*SEARCH*/
 	if($q == "search"){
 		$type = $_GET['type'];
 		$result = "";
@@ -119,5 +129,29 @@
 			}
 		}
 		echo $result;
+	}
+	
+	/*ONGOING*/
+	if($q == "ongoing"){
+		$agent = $_SESSION['user'][0];
+		$query = mysql_query("select u.firstname, u.lastname, e.logid, e.starttime, e.username from pulseuser u, pulseemergency e where u.email = e.email and e.status = 2 and e.username='".$agent."'", $conn) or die (mysql_error());
+		$result = "ONGOING (".mysql_num_rows($query).")";
+		while($row = mysql_fetch_assoc($query)){
+			if($row['starttime']){
+				$current = new DateTime();
+				$starttime = new DateTime($row['starttime']);
+				$timediff = $starttime->diff($current);
+				$diff = $timediff->format('%h hours %i minutes %s seconds');
+				$diff .= ' ago';
+			} else {
+				$diff = "NULL";
+			}
+			$result .= "<div class='iemergency' id='".$row['logid']."' onclick='detail(".$row['logid'].")'><span class='name'>".$row['firstname']." ".$row['lastname']."</span><br/><span class='time'>".$diff."</span></div>";
+		}
+		echo $result;
+	}
+	
+	/*DETAIL*/
+	if($q == "detail"){
 	}
 ?>
